@@ -1,0 +1,34 @@
+img.image(src=base + 'images/itcan-logo.png' width='130px' title="logo" alt="logo")
+h1 Hi, #{name},
+b Here’s what's on your plate
+
+h1 Overdue
+hr
+//- p #{taskList}
+
+if tasks.length > 0
+    each task in tasks
+        p: a(href=base + 'projects/' + task.project.projectId + '/tasks/' + task.slug) #{task.name} - #{task.dueDate}
+        //- p= task.name - task.dueDate
+        //- p= a(href=base + 'projects/' + task.project.projectId + '/tasks/' + task.slug) task.name - task.dueDate
+else
+    p No overdue task available
+
+h1 Due this week
+hr
+
+if dueTasks.length > 0
+    each dueTask in dueTasks
+        p: a(href=base + 'projects/' + dueTask.project.projectId + '/tasks/' + dueTask.slug) #{dueTask.name} - #{dueTask.dueDate}
+        //- p= dueTask.name - dueTask.dueDate
+        //- p:  dueTask.name - dueTask.dueDate
+        //- p #{dueTask.name} - #{dueTask.dueDate}
+else
+    p no due task available
+
+hr
+p Have questions? Need help? 
+a(href=base + 'contact' ) Contact our support team 
+p and we’ll get back to you in just a few minutes – promise
+
+

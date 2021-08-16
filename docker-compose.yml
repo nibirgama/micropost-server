@@ -1,0 +1,47 @@
+version: '3.8'
+
+networks:
+  itcanserver:
+
+services:
+  itcan_backend:
+    image: 'node:15.3.0-alpine3.10'
+    container_name: itcan_backend
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    networks:
+      - itcanserver
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - itcan_backend
+      - mysql
+    networks:
+      - itcanserver
+  mysql:
+    image: mysql:5.7.22
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - itcanserver
